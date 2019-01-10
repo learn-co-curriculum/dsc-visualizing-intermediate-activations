@@ -72,20 +72,18 @@ import matplotlib.pyplot as plt
 ```python
 img_path = 'IM-0115-0001.jpeg'
 
-# We preprocess the image into a 4D tensor
-
 
 img = image.load_img(img_path, target_size=(150, 150))
 img_tensor = image.img_to_array(img)
 img_tensor = np.expand_dims(img_tensor, axis=0)
-# Remember that the model was trained on inputs
-# that were preprocessed in the following way:
+
+#Follow the Original Model Preprocessing
 img_tensor /= 255.
 
-# Its shape is (1, 150, 150, 3)
+#Check tensor shape
 print(img_tensor.shape)
 
-
+#Preview an image
 plt.imshow(img_tensor[0])
 plt.show()
 ```
@@ -111,21 +109,62 @@ from keras import models
 
 
 ```python
-# Extracts the outputs of the top 8 layers:
+# Extract model layer outputs
 layer_outputs = [layer.output for layer in model.layers[:8]]
-# Creates a model that will return these outputs, given the model input:
+
+# Rather then a model with a single output, we are going to make a model to display the feature maps
 activation_model = models.Model(inputs=model.input, outputs=layer_outputs)
 ```
 
+If you return to our model summary, you can inspect the third dimension of each activation layer's output.
+
 
 ```python
-# This will return a list of 5 Numpy arrays:
-# one array per layer activation
+model.summary()
+```
+
+    _________________________________________________________________
+    Layer (type)                 Output Shape              Param #   
+    =================================================================
+    conv2d_1 (Conv2D)            (None, 148, 148, 32)      896       
+    _________________________________________________________________
+    max_pooling2d_1 (MaxPooling2 (None, 74, 74, 32)        0         
+    _________________________________________________________________
+    conv2d_2 (Conv2D)            (None, 72, 72, 64)        18496     
+    _________________________________________________________________
+    max_pooling2d_2 (MaxPooling2 (None, 36, 36, 64)        0         
+    _________________________________________________________________
+    conv2d_3 (Conv2D)            (None, 34, 34, 128)       73856     
+    _________________________________________________________________
+    max_pooling2d_3 (MaxPooling2 (None, 17, 17, 128)       0         
+    _________________________________________________________________
+    conv2d_4 (Conv2D)            (None, 15, 15, 128)       147584    
+    _________________________________________________________________
+    max_pooling2d_4 (MaxPooling2 (None, 7, 7, 128)         0         
+    _________________________________________________________________
+    flatten_1 (Flatten)          (None, 6272)              0         
+    _________________________________________________________________
+    dense_1 (Dense)              (None, 512)               3211776   
+    _________________________________________________________________
+    dense_2 (Dense)              (None, 1)                 513       
+    =================================================================
+    Total params: 3,453,121
+    Trainable params: 3,453,121
+    Non-trainable params: 0
+    _________________________________________________________________
+
+
+From this, you can see that the initial two layers output feature maps that have 32 channels each. You can visualize each of these channels individually by slicing the tensor along that axis. Subsequentially, the next two layers have 64 channels each and the 5th through 8th layers have 128 channels each. Recall that this allows the CNN to detect successively more abstract patterns. Here's what slicing one of these feature maps and visualizing an individual channel looks like in practice:
+
+
+```python
+# Returns an array for each activation layer
 activations = activation_model.predict(img_tensor)
 
 first_layer_activation = activations[0]
 print(first_layer_activation.shape)
 
+#We slice the third channel and preview the results
 plt.matshow(first_layer_activation[0, :, :, 3], cmap='viridis')
 plt.show()
 ```
@@ -134,13 +173,12 @@ plt.show()
 
 
 
-![png](index_files/index_9_1.png)
+![png](index_files/index_12_1.png)
 
 
 
 ```python
-# This will return a list of 5 Numpy arrays:
-# one array per layer activation
+#Repeating the process for another channel (the 30th)
 activations = activation_model.predict(img_tensor)
 
 first_layer_activation = activations[0]
@@ -154,10 +192,8 @@ plt.show()
 
 
 
-![png](index_files/index_10_1.png)
+![png](index_files/index_13_1.png)
 
-
-The result shown above is the first channel of the first layer. It has taken our original image and returned a new version with 148x148 pixels with 32 channels. Here we visualized channel 30.  
 
 More extensively, we could also visualize all 32 of these channels from the first activation function.
 
@@ -173,10 +209,12 @@ for i in range(32):
 ```
 
 
-![png](index_files/index_12_0.png)
+![png](index_files/index_15_0.png)
 
 
 ## Repeating for All Layers
+
+Similarly, we could also visualize other layers. This will also provide us some more talking points to further analyze the CNN. Below, we visualize the 29th channel for each of the activation layers. (Recall that there are more channels in later layers.)
 
 
 ```python
@@ -196,22 +234,8 @@ for i in range(8):
     ax.set_title(layer_names[i])
 ```
 
-    /Users/matthew.mitchell/anaconda3/lib/python3.6/site-packages/matplotlib/image.py:405: UserWarning: Warning: converting a masked element to nan.
-      dv = (np.float64(self.norm.vmax) -
-    /Users/matthew.mitchell/anaconda3/lib/python3.6/site-packages/matplotlib/image.py:406: UserWarning: Warning: converting a masked element to nan.
-      np.float64(self.norm.vmin))
-    /Users/matthew.mitchell/anaconda3/lib/python3.6/site-packages/matplotlib/image.py:412: UserWarning: Warning: converting a masked element to nan.
-      a_min = np.float64(newmin)
-    /Users/matthew.mitchell/anaconda3/lib/python3.6/site-packages/matplotlib/image.py:417: UserWarning: Warning: converting a masked element to nan.
-      a_max = np.float64(newmax)
-    /Users/matthew.mitchell/anaconda3/lib/python3.6/site-packages/matplotlib/colors.py:916: UserWarning: Warning: converting a masked element to nan.
-      dtype = np.min_scalar_type(value)
-    /Users/matthew.mitchell/anaconda3/lib/python3.6/site-packages/numpy/ma/core.py:716: UserWarning: Warning: converting a masked element to nan.
-      data = np.array(a, copy=False, subok=subok)
 
-
-
-![png](index_files/index_14_1.png)
+![png](index_files/index_17_0.png)
 
 
 Note how the later layers are more abstract representations, and in the case of the final two layers, we see nothing at all. This demonstrates how the representations learned by CNN architectures become increasingly abstract with the depth of the layers. In the case of the blank images displayed, this indicates that the patterns were not present in the current image. In other words, the CNN learned various patterns through training, but these more abstract features such as a rib or a lung were not found in this particular instance.
