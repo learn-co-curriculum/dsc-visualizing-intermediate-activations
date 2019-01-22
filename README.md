@@ -212,7 +212,7 @@ for i in range(32):
 ![png](index_files/index_15_0.png)
 
 
-## Repeating for All Layers
+## Repeating for all Layers
 
 Similarly, we could also visualize other layers. This will also provide us some more talking points to further analyze the CNN. Below, we visualize the 29th channel for each of the activation layers. (Recall that there are more channels in later layers.)
 
