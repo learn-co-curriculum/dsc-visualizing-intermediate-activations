@@ -1,5 +1,5 @@
 
-# Visualizing Intermediate Activation Function
+# Visualizing Intermediate Activations
 
 ## Introduction
 
