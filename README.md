@@ -3,7 +3,7 @@
 
 ## Introduction
 
-Deep learning is extremely powerful and helping to lead the advancement of many AI tasks. That said, deep learning is often critized for having a lot of *black box* algorithms in that the components of the model itself are difficult to interpret. In the case of CNNs and image recognition, this is actually not true at all! In this lecture, we will explore how you can visualize the intermediate hidden layers within your CNN to uncover what sorts of features your deep network is uncovering through some of the various filters. With that, you'll gain interesting insights and knowledge as to how your CNN is *seeing* the world.  
+Deep learning is extremely powerful and helping to lead the advancement of many AI tasks. That said, deep learning is often critized for having a lot of *black box* algorithms in that the components of the model itself are difficult to interpret. In the case of CNNs and image recognition, this is actually not true at all! In this lecture, you will explore how you can visualize the intermediate hidden layers within your CNN to uncover what sorts of features your deep network is uncovering through some of the various filters. With that, you'll gain interesting insights and knowledge as to how your CNN is *seeing* the world.  
 
 ## Objectives
 
@@ -116,7 +116,7 @@ layer_outputs = [layer.output for layer in model.layers[:8]]
 activation_model = models.Model(inputs=model.input, outputs=layer_outputs)
 ```
 
-If you return to our model summary, you can inspect the third dimension of each activation layer's output.
+If you return to the model summary, you can inspect the third dimension of each activation layer's output.
 
 
 ```python
@@ -214,7 +214,7 @@ for i in range(32):
 
 ## Repeating for all Layers
 
-Similarly, we could also visualize other layers. This will also provide us some more talking points to further analyze the CNN. Below, we visualize the 29th channel for each of the activation layers. (Recall that there are more channels in later layers.)
+Similarly, you could also visualize other layers. Below is the visualization of the 29th channel for each of the activation layers. (Recall that there are more channels in later layers.)
 
 
 ```python
@@ -242,4 +242,4 @@ Note how the later layers are more abstract representations, and in the case of 
 
 ## Summary
 
-In this lesson, we investigated how you can visualize feature maps, the representations learned by CNNs during training. While outside the scope of this lesson, there are other visualization techniques for CNNs such as visualizing the filters themselves, or visualizing heatmaps of the original image to identify where in an image patterns were identified. In the upcoming lab, you'll continue to practice visualizing feature maps, as we did here creating a complete visualization of all channels within each of the 8 model layers.
+In this lesson, you investigated how you can visualize feature maps, the representations learned by CNNs during training. While outside the scope of this lesson, there are other visualization techniques for CNNs such as visualizing the filters themselves, or visualizing heatmaps of the original image to identify where in an image patterns were identified. In the upcoming lab, you'll continue to practice visualizing feature maps, as you did here creating a complete visualization of all channels within each of the 8 model layers.
