@@ -100,7 +100,7 @@ plt.show()
 In order to get a better sense of what representations our CNN is learning under the hood, we will visualize the feature maps generated during training. Recall from our previous discussions that CNNs work by applying a filter successively over an image. This transformation creates a new representation of the image which we call a feature map. 
 
 
-<img src="images/Image_264_VIzInternActvation.png" width=550>
+<img src="images/Image_264_VIzInternActvation.png" width="550">
 
 
 ```python
