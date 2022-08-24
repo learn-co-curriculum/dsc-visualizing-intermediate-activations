@@ -58,7 +58,7 @@ model.summary()
 
 
 ```python
-from keras.preprocessing import image
+from tensorflow.keras.preprocessing import image
 import numpy as np
 import matplotlib.pyplot as plt
 %matplotlib inline
@@ -88,7 +88,9 @@ plt.show()
 
 
 
+    
 ![png](index_files/index_5_1.png)
+    
 
 
 ## Visualizing a Layer
@@ -170,7 +172,9 @@ plt.show()
 
 
 
+    
 ![png](index_files/index_12_1.png)
+    
 
 
 
@@ -189,7 +193,9 @@ plt.show()
 
 
 
+    
 ![png](index_files/index_13_1.png)
+    
 
 
 More extensively, we could also visualize all 32 of these channels from the first activation function.
@@ -206,7 +212,9 @@ for i in range(32):
 ```
 
 
+    
 ![png](index_files/index_15_0.png)
+    
 
 
 ## Repeating for all Layers
@@ -232,7 +240,9 @@ for i in range(8):
 ```
 
 
+    
 ![png](index_files/index_17_0.png)
+    
 
 
 Note how the later layers are more abstract representations, and in the case of the final two layers, we see nothing at all. This demonstrates how the representations learned by CNN architectures become increasingly abstract with the depth of the layers. In the case of the blank images displayed, this indicates that the patterns were not present in the current image.
