@@ -62,6 +62,9 @@ from tensorflow.keras.preprocessing import image
 import numpy as np
 import matplotlib.pyplot as plt
 %matplotlib inline
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'] # hides comments from tf regarding resources
+
 ```
 
 
